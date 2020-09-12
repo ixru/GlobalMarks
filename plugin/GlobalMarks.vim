@@ -11,9 +11,13 @@ function! GoToMark()
     call map(marks, {key, val -> val[1]})
 
     if index(marks, mark) == -1
-        echohl Error
-        echo "E20: Mark not set"
-        echohl None
+        try
+            execute "normal! '" . mark
+        catch
+            echohl Error
+            echo v:exception[12:]
+            echohl None
+        endtry
         return
     endif
 
